@@ -3,7 +3,7 @@ HTML5 and JavaScript based timer with notification chime for Coffee.
 
 ### How to Use?
 Access
-~~https://maruta.github.io/timekeeper/~~
+https://halueda.github.io/coffee_timekeeper/
 or you can use local copy of this repository.
 
 **:bangbang: Be careful to turn off screen savers and automatic screen cut :bangbang:**

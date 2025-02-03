@@ -296,6 +296,7 @@ $(function () {
 					changePhaseClass('1');
 					audio_chime1.currentTime = 0;
 					audio_chime1.play();
+		                        $('#state').html('2投目: +60g, total: 120g');
 					console.log('chime1');
 				}
 
@@ -303,6 +304,7 @@ $(function () {
 					changePhaseClass('2');
 					audio_chime2.currentTime = 0;
 					audio_chime2.play();
+		                        $('#state').html('3投目: +60g, total: 180g');
 					console.log('chime2');
 				}
 
@@ -310,6 +312,7 @@ $(function () {
 					changePhaseClass('3');
 					audio_chime3.currentTime = 0;
 					audio_chime3.play();
+		                        $('#state').html('4投目: +60g, total: 240g');
 					console.log('chime3');
 				}
 
@@ -317,6 +320,7 @@ $(function () {
 					changePhaseClass('4');
 					audio_chime4.currentTime = 0;
 					audio_chime4.play();
+		                        $('#state').html('5投目: +60g, total: 300g');
 					console.log('chime4');
 				}
 
@@ -324,6 +328,7 @@ $(function () {
 					changePhaseClass('5');
 					audio_chime5.currentTime = 0;
 					audio_chime4.play();
+		                        $('#state').html('Finish!');
 					console.log('chime5');
 				}
 
