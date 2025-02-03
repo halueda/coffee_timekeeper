@@ -33,6 +33,7 @@ Time Keeper logo on left-top is the link to the URL with the current setting, an
 - 粉量:20g 湯量:300g 粗挽き
 
 | 時間  | 投数   | 注ぐお湯の量 | 総量(スケールが示す量) |
+|-------|--------|--------------|------------------------|
 | Start | 1投目  | 60g          | 60g                    |
 | 0:45  | 2投目  | 60g          | 120g                   |
 | 1:30  | 3投目  | 60g          | 180g                   |
