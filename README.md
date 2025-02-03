@@ -26,6 +26,7 @@ Time Keeper logo on left-top is the link to the URL with the current setting, an
 
 ### オリジナルのtimekeeper からの拡張・変更
 - 時刻を5個に拡張
+- チャイムが鳴るたびに、何投目かと総量を表示するようにした
 
 #### 4:6メソッドの基本レシピ
 - 4:6 メソッドは、粕谷哲さんの https://philocoffea.com/?mode=f3 を参照
