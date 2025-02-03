@@ -21,7 +21,7 @@ Time Keeper logo on left-top is the link to the URL with the current setting, an
  * Edit timekeeper/theme/default.css
  * By using class added to the body tag, the appearance can be changed according to the phase and state of the timer.
  * Theme can be specified via URL as  
-   http://maruta.github.io/timekeeper/#th=example  
+   https://halueda.github.io/coffee_timekeeper/#th=example  
    In this case, timekeeper/theme/example.css will be loaded in place of default.css.
 
 ### オリジナルのtimekeeper からの拡張・変更
