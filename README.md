@@ -26,7 +26,6 @@ Time Keeper logo on left-top is the link to the URL with the current setting, an
 
 ### オリジナルのtimekeeper からの拡張・変更
 - 時刻を5個に拡張
-- 入れ方のアドバイスを初期値に入れた
 
 #### 4:6メソッドの基本レシピ
 - 4:6 メソッドは、粕谷哲さんの https://philocoffea.com/?mode=f3 を参照
