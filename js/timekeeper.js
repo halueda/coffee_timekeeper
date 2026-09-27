@@ -35,8 +35,8 @@ $(function () {
 		{ key: 't1', inputId: 'time1', phase: 1, type: 'pour', scheduleLabel: '2投目', messageLabel: '2投目', title: '1st bell', time: '0:40', amount: 60, total: 120, chime: './wav/chime1.mp3' },
 		{ key: 't2', inputId: 'time2', phase: 2, type: 'pour', scheduleLabel: '3投目', messageLabel: '3投目', title: '2nd bell', time: '1:30', amount: 60, total: 180, chime: './wav/chime2.mp3' },
 		{ key: 't3', inputId: 'time3', phase: 3, type: 'pour', scheduleLabel: '4投目', messageLabel: '4投目', title: '3rd bell', time: '2:10', amount: 60, total: 240, chime: './wav/chime3.mp3' },
-		{ key: 't4', inputId: 'time4', phase: 4, type: 'pour', scheduleLabel: '5投目', messageLabel: '5投目', title: '4th bell', time: '2:40', amount: 60, total: 300, chime: './wav/chime4.mp3' },
-		{ key: 't5', inputId: 'time5', phase: 5, type: 'finish', scheduleLabel: '終了', messageLabel: '完了', title: 'last bell', time: '3:30', amount: null, total: null, chime: './wav/chime5.mp3' }
+		{ key: 't4', inputId: 'time4', phase: 4, type: 'pour', scheduleLabel: '5投目', messageLabel: '5投目', title: '4th bell', time: '2:40', amount: 60, total: 300, chime: './wav/chime3.mp3' },
+		{ key: 't5', inputId: 'time5', phase: 5, type: 'finish', scheduleLabel: '終了', messageLabel: '完了', title: 'last bell', time: '3:30', amount: null, total: null, chime: './wav/chime3.mp3' }
 	];
 
 	function renderScheduleSettings() {
