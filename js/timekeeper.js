@@ -169,7 +169,7 @@ $(function () {
 	function standby() {
 		$('.nav li').removeClass('active');
 		$('.nav li#standby').addClass('active');
-		$('#state').html('待機中');
+		$('#state').html('コーヒー18gを用意してキッチンスケールに乗せます');
 		changeStateClass('standby');
 		changePhaseClass('0');
 		setSchedulePhase(0);
