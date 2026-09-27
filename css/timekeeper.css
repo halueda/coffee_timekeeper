@@ -171,8 +171,11 @@ input:invalid {
  #info { padding:0 14px; }
 }
 @media (max-width:390px) {
- .navbar-brand span { display:none; }
- .navbar-nav>li>a, .sound-control>li>a { padding-left:7px; padding-right:7px; font-size:18px; }
- .navbar-right>li>a { padding-left:7px; padding-right:7px; }
+ .navbar-header { width:0; overflow:hidden; }
+ .navbar-brand { display:none; }
+ .navbar-nav { flex-wrap:nowrap; }
+ .navbar-nav>li>a, .sound-control>li>a { min-height:96px; padding-left:4px; padding-right:4px; font-size:16px; white-space:nowrap; }
+ .sound-control { white-space:nowrap; }
+ .navbar-right:not(.sound-control)>li>a { padding-left:7px; padding-right:7px; }
  #schedule { bottom:8px; }
 }
