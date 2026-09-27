@@ -137,6 +137,7 @@ input:invalid {
 .timer-layout { position:relative; height:100%; }
 .timer-display { position:absolute; inset:0; }
 #schedule { position:absolute; z-index:3; right:18px; top:76px; width:190px; padding:10px 12px; border:1px solid rgba(255,255,255,.18); border-radius:10px; background:rgba(20,20,20,.82); color:#ddd; font-size:13px; backdrop-filter:blur(4px); }
+#build-version { position:fixed; z-index:4; right:8px; bottom:4px; color:rgba(255,255,255,.45); font-size:10px; line-height:1; letter-spacing:.04em; pointer-events:none; }
 .schedule-heading, .schedule-row { display:grid; grid-template-columns:1fr 48px 42px; gap:5px; align-items:center; }
 .schedule-heading { padding-bottom:6px; color:#999; font-size:10px; text-transform:uppercase; letter-spacing:.08em; }
 .schedule-total { grid-column:3; text-align:right; }
