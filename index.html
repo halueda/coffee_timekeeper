@@ -46,14 +46,7 @@
           <li id="soundcheck"><a href="#soundcheck" data-toggle="tooltip" data-placement="bottom" title="Sound Check"><span class="glyphicon glyphicon-volume-up" aria-hidden="true"></span> <span>Check</span></a></li>
         </ul>
         <form class="navbar-form navbar-left" action="" aria-label="Timer settings">
-          <div class="form-group">
-            <label for="time0">開始<input id="time0" class="form-control" data-toggle="tooltip" data-placement="bottom" title="Initial Time. Negative value for countdown" type="text" pattern="[\-:0-9]*"></label>
-            <label for="time1">1投目<input id="time1" class="form-control" data-toggle="tooltip" data-placement="bottom" title="1st bell" type="text" pattern="[\-:0-9]*"></label>
-            <label for="time2">2投目<input id="time2" class="form-control" data-toggle="tooltip" data-placement="bottom" title="2nd bell" type="text" pattern="[\-:0-9]*"></label>
-            <label for="time3">3投目<input id="time3" class="form-control" data-toggle="tooltip" data-placement="bottom" title="3rd bell" type="text" pattern="[\-:0-9]*"></label>
-            <label for="time4">4投目<input id="time4" class="form-control" data-toggle="tooltip" data-placement="bottom" title="4th bell" type="text" pattern="[\-:0-9]*"></label>
-            <label for="time5">終了<input id="time5" class="form-control" data-toggle="tooltip" data-placement="bottom" title="last bell" type="text" pattern="[\-:0-9]*"></label>
-          </div>
+          <div class="form-group" id="time-settings"></div>
         </form>
     </div><!-- /.container-fluid -->
   </nav>
@@ -71,12 +64,7 @@
 	</div>
 	<aside id="schedule" aria-label="Pour schedule">
 		<div class="schedule-heading"><span>注湯スケジュール</span><span class="schedule-total">目標量</span></div>
-		<div class="schedule-row" data-phase="0"><span class="schedule-step">開始</span><span class="schedule-time" data-time="0">0:00</span><strong>60g</strong></div>
-		<div class="schedule-row" data-phase="1"><span class="schedule-step">2投目</span><span class="schedule-time" data-time="1">0:40</span><strong>120g</strong></div>
-		<div class="schedule-row" data-phase="2"><span class="schedule-step">3投目</span><span class="schedule-time" data-time="2">1:30</span><strong>180g</strong></div>
-		<div class="schedule-row" data-phase="3"><span class="schedule-step">4投目</span><span class="schedule-time" data-time="3">2:10</span><strong>240g</strong></div>
-		<div class="schedule-row" data-phase="4"><span class="schedule-step">5投目</span><span class="schedule-time" data-time="4">2:40</span><strong>300g</strong></div>
-		<div class="schedule-row finish" data-phase="5"><span class="schedule-step">終了</span><span class="schedule-time" data-time="5">3:30</span><strong>—</strong></div>
+		<div id="schedule-rows"></div>
 	</aside>
 	</main>
 </body>

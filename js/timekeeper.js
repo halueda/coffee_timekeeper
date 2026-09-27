@@ -27,18 +27,48 @@ $(function () {
 	let time_str = "00:00";
 	let time_inner = 0;
 	var loadedcss = '';
-	$('#time0').val('0:00');
-	$('#time1').val('0:40');
-	$('#time2').val('1:30');
-	$('#time3').val('2:10');
-	$('#time4').val('2:40');
-	$('#time5').val('3:30');
+
+	// The schedule is the single source of truth for inputs, display, URL
+	// parameters, chimes, and timer transitions.
+	var scheduleSteps = [
+		{ key: 't0', inputId: 'time0', phase: 0, type: 'pour', scheduleLabel: '開始', messageLabel: '1投目', title: 'Initial Time. Negative value for countdown', time: '0:00', amount: 60, total: 60, chime: null },
+		{ key: 't1', inputId: 'time1', phase: 1, type: 'pour', scheduleLabel: '2投目', messageLabel: '2投目', title: '1st bell', time: '0:40', amount: 60, total: 120, chime: './wav/chime1.mp3' },
+		{ key: 't2', inputId: 'time2', phase: 2, type: 'pour', scheduleLabel: '3投目', messageLabel: '3投目', title: '2nd bell', time: '1:30', amount: 60, total: 180, chime: './wav/chime2.mp3' },
+		{ key: 't3', inputId: 'time3', phase: 3, type: 'pour', scheduleLabel: '4投目', messageLabel: '4投目', title: '3rd bell', time: '2:10', amount: 60, total: 240, chime: './wav/chime3.mp3' },
+		{ key: 't4', inputId: 'time4', phase: 4, type: 'pour', scheduleLabel: '5投目', messageLabel: '5投目', title: '4th bell', time: '2:40', amount: 60, total: 300, chime: './wav/chime4.mp3' },
+		{ key: 't5', inputId: 'time5', phase: 5, type: 'finish', scheduleLabel: '終了', messageLabel: '完了', title: 'last bell', time: '3:30', amount: null, total: null, chime: './wav/chime5.mp3' }
+	];
+
+	function renderScheduleSettings() {
+		var settingsHtml = '';
+		var scheduleHtml = '';
+		scheduleSteps.forEach(function (step) {
+			settingsHtml += '<label for="' + step.inputId + '">' + step.scheduleLabel
+				+ '<input id="' + step.inputId + '" class="form-control" data-step-key="' + step.key
+				+ '" data-toggle="tooltip" data-placement="bottom" title="' + step.title
+				+ '" type="text" pattern="[\\-:0-9]*"></label>';
+
+			scheduleHtml += '<div class="schedule-row' + (step.type === 'finish' ? ' finish' : '')
+				+ '" data-phase="' + step.phase + '" data-step-key="' + step.key + '">'
+				+ '<span class="schedule-step">' + step.scheduleLabel + '</span>'
+				+ '<span class="schedule-time" data-step-key="' + step.key + '">' + step.time + '</span>'
+				+ '<strong>' + (step.total === null ? '—' : step.total + 'g') + '</strong></div>';
+		});
+
+		$('#time-settings').html(settingsHtml);
+		$('#schedule-rows').html(scheduleHtml);
+		scheduleSteps.forEach(function (step) {
+			$('#' + step.inputId).val(step.time);
+		});
+	}
+
+	renderScheduleSettings();
 	$('#info').html("一回に60gずつ入れる.");
 
 	function syncSchedule() {
-		for (let i = 0; i <= 5; i++) {
-			$('#schedule [data-time="' + i + '"]').text($('#time' + i).val());
-		}
+		scheduleSteps.forEach(function (step) {
+			$('#schedule .schedule-time[data-step-key="' + step.key + '"]').text($('#' + step.inputId).val());
+		});
 	}
 	function setSchedulePhase(phase) {
 		$('#schedule .schedule-row').removeClass('active');
@@ -61,13 +91,12 @@ $(function () {
 	}
 
 	function parseHashParams() {
-		params = getHashParams();
-		if (params.t0 !== undefined) $('#time0').val(params.t0);
-		if (params.t1 !== undefined) $('#time1').val(params.t1);
-		if (params.t2 !== undefined) $('#time2').val(params.t2);
-		if (params.t3 !== undefined) $('#time3').val(params.t3);
-		if (params.t4 !== undefined) $('#time4').val(params.t4);
-		if (params.t5 !== undefined) $('#time5').val(params.t5);
+		var params = getHashParams();
+		scheduleSteps.forEach(function (step) {
+			if (params[step.key] !== undefined) {
+				$('#' + step.inputId).val(params[step.key]);
+			}
+		});
 		if (params.m !== undefined) $('#info').html(DOMPurify.sanitize(params.m));
 		if (loadedcss !== '') {
 			location.reload();
@@ -81,13 +110,12 @@ $(function () {
 	}
 
 	function updateHash() {
-		var hashstr = '#t0=' + $('#time0').val()
-			+ '&t1=' + $('#time1').val()
-			+ '&t2=' + $('#time2').val()
-			+ '&t3=' + $('#time3').val()
-			+ '&t4=' + $('#time4').val()
-			+ '&t5=' + $('#time5').val()
-			+ '&m=' + encodeURIComponent($('#info').html());
+		var hashstr = '#';
+		scheduleSteps.forEach(function (step, index) {
+			if (index > 0) hashstr += '&';
+			hashstr += step.key + '=' + $('#' + step.inputId).val();
+		});
+		hashstr += '&m=' + encodeURIComponent($('#info').html());
 		if (loadedcss !== 'default') {
 			hashstr = hashstr + '&th=' + encodeURIComponent(loadedcss);
 		}
@@ -106,7 +134,7 @@ $(function () {
 	parseHashParams();
 	updateHash();
 
-	$('#time0,#time1,#time2,#time3,#time4,#time5,#info').change(function () {
+	$('#time-settings input[data-step-key], #info').change(function () {
 		syncSchedule();
 		updateHash();
 	});
@@ -119,12 +147,10 @@ $(function () {
 		}
 	});
 
-	var audio_chime1, audio_chime2, audio_chime3;
-	audio_chime1 = new Audio("./wav/chime1.mp3");
-	audio_chime2 = new Audio("./wav/chime2.mp3");
-	audio_chime3 = new Audio("./wav/chime3.mp3");
-	audio_chime4 = new Audio("./wav/chime4.mp3");
-	audio_chime5 = new Audio("./wav/chime5.mp3");
+	var audioChimes = {};
+	scheduleSteps.forEach(function (step) {
+		audioChimes[step.key] = step.chime === null ? null : new Audio(step.chime);
+	});
 
 	function changeStateClass(s) {
 		$('body').removeClass(function (index, className) {
@@ -161,11 +187,10 @@ $(function () {
 		changeStateClass('start');
 		start_time = new Date((new Date()).getTime() - time_inner);
 		last_time = null;
-		audio_chime1.load();
-		audio_chime2.load();
-		audio_chime3.load();
-		audio_chime4.load();
-		audio_chime5.load();
+		scheduleSteps.forEach(function (step) {
+			var audio = audioChimes[step.key];
+			if (audio !== null) audio.load();
+		});
 	}
 
 	$('.nav #standby').click(function (event) {
@@ -232,9 +257,16 @@ $(function () {
 
 	$('#soundcheck').click(function (event) {
 		event.preventDefault();
-		audio_chime1.load();
-		audio_chime1.currentTime = 0;
-		audio_chime1.play();
+		var soundCheck = null;
+		scheduleSteps.some(function (step) {
+			soundCheck = audioChimes[step.key];
+			return soundCheck !== null;
+		});
+		if (soundCheck !== null) {
+			soundCheck.load();
+			soundCheck.currentTime = 0;
+			soundCheck.play();
+		}
 	});
 
 	function format_time(t) {
@@ -290,6 +322,28 @@ $(function () {
 		return time;
 	}
 
+	function getStepTime(step) {
+		return $('#' + step.inputId).val();
+	}
+
+	function activateStep(step) {
+		changePhaseClass(step.phase);
+		setSchedulePhase(step.phase);
+
+		var audio = audioChimes[step.key];
+		if (audio !== null) {
+			audio.currentTime = 0;
+			audio.play();
+		}
+
+		if (step.type === 'finish') {
+			$('#state').html('完了');
+		} else {
+			$('#state').html(step.messageLabel + ': +' + step.amount + 'g, total: ' + step.total + 'g');
+		}
+		console.log(step.key);
+	}
+
 	$('[data-toggle="tooltip"]').tooltip();
 	$.timer(100, function (timer) {
 		resize_display();
@@ -298,57 +352,12 @@ $(function () {
 
 			var cur_time = new Date();
 			if (last_time != null) {
-				var time1 = new Date(start_time.getTime() + parse_time($('#time1').val()));
-				var time2 = new Date(start_time.getTime() + parse_time($('#time2').val()));
-				var time3 = new Date(start_time.getTime() + parse_time($('#time3').val()));
-				var time4 = new Date(start_time.getTime() + parse_time($('#time4').val()));
-				var time5 = new Date(start_time.getTime() + parse_time($('#time5').val()));
-
-				if ((last_time < time1 && time1 <= cur_time) || (last_time == time1 && cur_time == time1)) {
-					changePhaseClass('1');
-					setSchedulePhase(1);
-					audio_chime1.currentTime = 0;
-					audio_chime1.play();
-		                        $('#state').html('2投目: +60g, total: 120g');
-					console.log('chime1');
-				}
-
-				if ((last_time < time2 && time2 <= cur_time) || (last_time == time2 && cur_time == time2)) {
-					changePhaseClass('2');
-					setSchedulePhase(2);
-					audio_chime2.currentTime = 0;
-					audio_chime2.play();
-		                        $('#state').html('3投目: +60g, total: 180g');
-					console.log('chime2');
-				}
-
-				if ((last_time < time3 && time3 <= cur_time) || (last_time == time3 && cur_time == time3)) {
-					changePhaseClass('3');
-					setSchedulePhase(3);
-					audio_chime3.currentTime = 0;
-					audio_chime3.play();
-		                        $('#state').html('4投目: +60g, total: 240g');
-					console.log('chime3');
-				}
-
-				if ((last_time < time4 && time4 <= cur_time) || (last_time == time4 && cur_time == time4)) {
-					changePhaseClass('4');
-					setSchedulePhase(4);
-					audio_chime4.currentTime = 0;
-					audio_chime4.play();
-		                        $('#state').html('5投目: +60g, total: 300g');
-					console.log('chime4');
-				}
-
-				if ((last_time < time5 && time5 <= cur_time) || (last_time == time5 && cur_time == time5)) {
-					changePhaseClass('5');
-					setSchedulePhase(5);
-					audio_chime5.currentTime = 0;
-					audio_chime5.play();
-		                        $('#state').html('完了');
-					console.log('chime5');
-				}
-
+				scheduleSteps.forEach(function (step) {
+					var stepTime = new Date(start_time.getTime() + parse_time(getStepTime(step)));
+					if ((last_time < stepTime && stepTime <= cur_time) || (last_time == stepTime && cur_time == stepTime)) {
+						activateStep(step);
+					}
+				});
 			}
 			last_time = cur_time;
 		}
