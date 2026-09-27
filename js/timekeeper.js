@@ -240,13 +240,14 @@ $(function () {
 		var height = $('.timer-display').height() || $('.timer-layout').height() || $('body').height();
 		var width = $('.timer-display').width() || $('.timer-layout').width() || $('body').width();
 		var theight = Math.min(height * 3 / 5, width * 1.95 / nletters);
-		$('#time').css('top', (height - theight) / 2 * 1.1);
+		var timeTop = (height - theight) / 2 * 1.1;
+		$('#time').css('top', timeTop);
 		$('#time').css('font-size', theight + 'px');
 		$('#time').css('line-height', theight + 'px');
 		var sheight = theight / 6;
-		$('#state').css('top', height / 2 - theight / 2 - sheight / 2);
 		$('#state').css('font-size', sheight + 'px');
 		$('#state').css('line-height', sheight + 'px');
+		$('#state').css('top', timeTop - $('#state').outerHeight() - sheight / 2);
 		var iheight = sheight;
 		$('#info').css('top', height / 2 + theight / 2 + iheight * 0.9);
 		$('#info').css('font-size', iheight + 'px');
