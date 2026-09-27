@@ -35,6 +35,16 @@ $(function () {
 	$('#time5').val('3:30');
 	$('#info').html("一回に60gずつ入れる.");
 
+	function syncSchedule() {
+		for (let i = 0; i <= 5; i++) {
+			$('#schedule [data-time="' + i + '"]').text($('#time' + i).val());
+		}
+	}
+	function setSchedulePhase(phase) {
+		$('#schedule .schedule-row').removeClass('active');
+		$('#schedule .schedule-row[data-phase="' + phase + '"]').addClass('active');
+	}
+
 	function getHashParams() {
 		var hashParams = {};
 		var e,
@@ -97,6 +107,7 @@ $(function () {
 	updateHash();
 
 	$('#time0,#time1,#time2,#time3,#time4,#time5,#info').change(function () {
+		syncSchedule();
 		updateHash();
 	});
 
@@ -132,9 +143,10 @@ $(function () {
 	function standby() {
 		$('.nav li').removeClass('active');
 		$('.nav li#standby').addClass('active');
-		$('#state').html('STANDBY');
+		$('#state').html('待機中');
 		changeStateClass('standby');
 		changePhaseClass('0');
+		setSchedulePhase(0);
 		time_inner = parse_time($('#time0').val());
 		show_time();
 	}
@@ -190,7 +202,7 @@ $(function () {
 		$('.nav li').removeClass('active');
 		$('.nav li#pause').addClass('active');
 		update_time();
-		$('#state').html('PAUSED');
+		$('#state').html('一時停止');
 		changeStateClass('paused');
 	}
 
@@ -200,8 +212,8 @@ $(function () {
 	});
 
 	function resize_display() {
-		var height = $('body').height();
-		var width = $('body').width();
+		var height = $('.timer-display').height() || $('.timer-layout').height() || $('body').height();
+		var width = $('.timer-display').width() || $('.timer-layout').width() || $('body').width();
 		var theight = Math.min(height * 3 / 5, width * 1.95 / nletters);
 		$('#time').css('top', (height - theight) / 2 * 1.1);
 		$('#time').css('font-size', theight + 'px');
@@ -211,7 +223,7 @@ $(function () {
 		$('#state').css('font-size', sheight + 'px');
 		$('#state').css('line-height', sheight + 'px');
 		var iheight = sheight;
-		$('#info').css('top', height / 2 + theight / 2);
+		$('#info').css('top', height / 2 + theight / 2 + iheight * 0.9);
 		$('#info').css('font-size', iheight + 'px');
 		$('#info').css('line-height', iheight + 'px');
 	}
@@ -294,6 +306,7 @@ $(function () {
 
 				if ((last_time < time1 && time1 <= cur_time) || (last_time == time1 && cur_time == time1)) {
 					changePhaseClass('1');
+					setSchedulePhase(1);
 					audio_chime1.currentTime = 0;
 					audio_chime1.play();
 		                        $('#state').html('2投目: +60g, total: 120g');
@@ -302,6 +315,7 @@ $(function () {
 
 				if ((last_time < time2 && time2 <= cur_time) || (last_time == time2 && cur_time == time2)) {
 					changePhaseClass('2');
+					setSchedulePhase(2);
 					audio_chime2.currentTime = 0;
 					audio_chime2.play();
 		                        $('#state').html('3投目: +60g, total: 180g');
@@ -310,6 +324,7 @@ $(function () {
 
 				if ((last_time < time3 && time3 <= cur_time) || (last_time == time3 && cur_time == time3)) {
 					changePhaseClass('3');
+					setSchedulePhase(3);
 					audio_chime3.currentTime = 0;
 					audio_chime3.play();
 		                        $('#state').html('4投目: +60g, total: 240g');
@@ -318,6 +333,7 @@ $(function () {
 
 				if ((last_time < time4 && time4 <= cur_time) || (last_time == time4 && cur_time == time4)) {
 					changePhaseClass('4');
+					setSchedulePhase(4);
 					audio_chime4.currentTime = 0;
 					audio_chime4.play();
 		                        $('#state').html('5投目: +60g, total: 300g');
@@ -326,9 +342,10 @@ $(function () {
 
 				if ((last_time < time5 && time5 <= cur_time) || (last_time == time5 && cur_time == time5)) {
 					changePhaseClass('5');
+					setSchedulePhase(5);
 					audio_chime5.currentTime = 0;
-					audio_chime4.play();
-		                        $('#state').html('Finish!');
+					audio_chime5.play();
+		                        $('#state').html('完了');
 					console.log('chime5');
 				}
 
@@ -358,4 +375,5 @@ $(function () {
 		})
 	}
 	show_time();
+	syncSchedule();
 });
